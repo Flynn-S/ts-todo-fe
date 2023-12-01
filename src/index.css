@@ -4,8 +4,6 @@ html,
 body,
 #root,
 .app {
-  height: 100%;
-  width: 100%;
   font-family: "Inter", sans-serif;
   background-color: rgb(245, 235, 212);
 }
@@ -26,6 +24,7 @@ h1 {
   align-items: center;
   width: 100vw;
   padding-top: 20px;
+  margin-bottom: 6rem;
 }
 
 .task-list {
@@ -40,7 +39,6 @@ h1 {
   box-shadow: 0px 4px 4px 1px rgba(209, 213, 219, 0.6);
   margin: 1rem 2rem;
   padding: 1rem 4rem;
-  /* width: 100%; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -96,7 +94,7 @@ h1 {
   transform: scale(1.1);
 }
 
-.buttons .editIcon:hover {
+.editButton:hover .editIcon {
   animation: beat 1s ease-in-out infinite;
 }
 
@@ -111,7 +109,7 @@ h1 {
   margin-right: 20px;
 }
 
-.addIcon:hover {
+.addTaskButton:hover .addIcon {
   animation: beat 1s ease-in-out infinite;
 }
 
@@ -131,7 +129,7 @@ h1 {
   transform: scale(1.05);
 }
 
-.buttons .deleteIcon:hover {
+.deleteButton:hover .deleteIcon {
   animation: bounce 1s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
 }
 
@@ -241,7 +239,7 @@ h1 {
 .add-task-container button {
   border: none;
   border-radius: 3rem;
-  padding: 1.8rem 10rem;
+  padding: 1rem 10rem;
   box-shadow: 0px 2px 2px 1px rgb(209 213 219);
   background-color: rgb(37, 112, 255);
   font-family: "Inter", sans-serif;

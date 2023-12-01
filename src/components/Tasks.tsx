@@ -139,11 +139,17 @@ const Tasks: React.FC = () => {
                 ></input>
               </label>
               <div className="buttons">
-                <button onClick={() => handleEditTask(task)}>
+                <button
+                  className="editButton"
+                  onClick={() => handleEditTask(task)}
+                >
                   <FontAwesomeIcon className="editIcon" icon={faPenToSquare} />
                   <p>Edit</p>
                 </button>
-                <button onClick={() => handleDeleteTask(task.id)}>
+                <button
+                  className="deleteButton"
+                  onClick={() => handleDeleteTask(task.id)}
+                >
                   <FontAwesomeIcon className="deleteIcon" icon={faTrash} />
                   <p>Delete</p>
                 </button>
