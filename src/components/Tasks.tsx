@@ -5,10 +5,15 @@ import { useState } from "react";
 interface EditTaskModalProps {
   task: Task;
   onClose: () => void;
-  onSave: (editedTask: Task) => void;
+  refetch: () => void;
+  //   onSave: (editedTask: Task) => void;
 }
 
-const EditTaskModal: React.FC<EditTaskModalProps> = ({ task, onClose }) => {
+const EditTaskModal: React.FC<EditTaskModalProps> = ({
+  task,
+  onClose,
+  refetch,
+}) => {
   const [editedTask, setEditedTask] = useState<Task>({ ...task });
   //   const [updatedTask, setUpdatedTask] = useState<Task | null>(null)
 
@@ -24,6 +29,7 @@ const EditTaskModal: React.FC<EditTaskModalProps> = ({ task, onClose }) => {
     {
       onSuccess: () => {
         console.log("Task updated successfully!");
+        refetch();
         onClose();
       },
       onError: (error: Error) => {
@@ -41,7 +47,8 @@ const EditTaskModal: React.FC<EditTaskModalProps> = ({ task, onClose }) => {
     setEditedTask((prevTask) => ({ ...prevTask, [name]: value }));
   };
 
-  const handleSave = (editedTask: Task) => {
+  const handleSave: React.MouseEventHandler<HTMLButtonElement> = () => {
+    console.log(editedTask);
     updateTask.mutate(editedTask);
   };
 
@@ -82,12 +89,13 @@ const EditTaskModal: React.FC<EditTaskModalProps> = ({ task, onClose }) => {
 };
 
 const Tasks: React.FC = () => {
-  const [selectedTask, setSelectedTask] = useState(null);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const {
     isLoading,
     error,
     data: tasks = [],
+    refetch,
   } = useQuery<Task[]>("tasks", async () => {
     const response = await fetch("http://localhost:8000/api/tasks"); // Replace with your actual API endpoint
     if (!response.ok) {
@@ -96,7 +104,7 @@ const Tasks: React.FC = () => {
     return response.json();
   });
 
-  const handleEditTask = (task) => {
+  const handleEditTask = (task: Task) => {
     setSelectedTask(task);
   };
 
@@ -128,7 +136,7 @@ const Tasks: React.FC = () => {
               <input type="checkbox"></input>
               <div className="buttons">
                 <button onClick={() => handleEditTask(task)}>Edit</button>
-                <button onClick={() => handleDeleteTask(task)}>Delete</button>
+                {/* <button onClick={() => handleDeleteTask(task)}>Delete</button> */}
               </div>
             </div>
           </div>
@@ -136,7 +144,11 @@ const Tasks: React.FC = () => {
       </ul>
 
       {selectedTask && (
-        <EditTaskModal task={selectedTask} onClose={handleModalClose} />
+        <EditTaskModal
+          task={selectedTask}
+          onClose={handleModalClose}
+          refetch={refetch}
+        />
       )}
     </div>
   );
