@@ -1,31 +1,56 @@
-import { useQuery } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import { Task } from "../interfaces/task";
 import { useState } from "react";
 
 interface EditTaskModalProps {
-    task: Task;
-    onClose: () => void;
-    onSave: (editedTask: Task) => void;
-  }
+  task: Task;
+  onClose: () => void;
+  onSave: (editedTask: Task) => void;
+}
 
-const EditTaskModal: React.FC<EditTaskModalProps> = ({ task, onClose, onSave}) {
-  const [editedTask, setEditedTask] = useState({ ...task });
+const EditTaskModal: React.FC<EditTaskModalProps> = ({ task, onClose }) => {
+  const [editedTask, setEditedTask] = useState<Task>({ ...task });
+  //   const [updatedTask, setUpdatedTask] = useState<Task | null>(null)
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const updateTask = useMutation(
+    (updatedTask: Task) =>
+      fetch(`http://localhost:8000/api/tasks/${updatedTask.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedTask),
+      }),
+    {
+      onSuccess: () => {
+        console.log("Task updated successfully!");
+        onClose();
+      },
+      onError: (error: Error) => {
+        console.error("Error updating task:", error);
+        onClose();
+      },
+    }
+  );
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     console.log(name, value);
     setEditedTask((prevTask) => ({ ...prevTask, [name]: value }));
   };
 
-  const handleSave = () => {
-    onSave(editedTask);
-    onClose();
+  const handleSave = (editedTask: Task) => {
+    updateTask.mutate(editedTask);
   };
 
+  const showModal = task !== null ? "display-block" : "display-none";
   return (
-    <div className="task-modal">
+    <div className={`${showModal} task-modal`}>
       <div className="task-modal-content">
         <h2>Edit Task</h2>
+
         <label>
           Task Name:
           <input
@@ -43,12 +68,18 @@ const EditTaskModal: React.FC<EditTaskModalProps> = ({ task, onClose, onSave}) {
             onChange={handleInputChange}
           />
         </label>
-        <button onClick={handleSave}>Save</button>
-        <button onClick={onClose}>Cancel</button>
+        <div className="button-container">
+          <button onClick={handleSave} className="save-btn">
+            Save
+          </button>
+          <button onClick={onClose} className="cancel-btn">
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
   );
-}
+};
 
 const Tasks: React.FC = () => {
   const [selectedTask, setSelectedTask] = useState(null);
@@ -73,10 +104,6 @@ const Tasks: React.FC = () => {
     setSelectedTask(null);
   };
 
-  const handleSaveTask = (editedTask) => {
-    console.log("Saving task:", editedTask);
-  };
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -99,21 +126,20 @@ const Tasks: React.FC = () => {
             </div>
             <div className="task-right">
               <input type="checkbox"></input>
-              <button onClick={() => handleEditTask(task)}>EDIT</button>
+              <div className="buttons">
+                <button onClick={() => handleEditTask(task)}>Edit</button>
+                <button onClick={() => handleDeleteTask(task)}>Delete</button>
+              </div>
             </div>
           </div>
         ))}
       </ul>
 
       {selectedTask && (
-        <EditTaskModal
-          task={selectedTask}
-          onClose={handleModalClose}
-          onSave={handleSaveTask}
-        />
+        <EditTaskModal task={selectedTask} onClose={handleModalClose} />
       )}
     </div>
   );
-}
+};
 
 export default Tasks;

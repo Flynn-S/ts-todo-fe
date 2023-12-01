@@ -7,7 +7,7 @@ body,
   height: 100%;
   width: 100%;
   font-family: "Inter", sans-serif;
-  /* background-color: #1f2026; */
+  background-color: rgb(255, 225, 184);
 }
 
 .app {
@@ -16,11 +16,16 @@ body,
   align-items: center;
 }
 
+h1 {
+  margin: 0;
+}
+
 .tasks-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 80vw;
+  width: 100vw;
+  padding-top: 20px;
 }
 
 .task-list {
@@ -32,14 +37,14 @@ body,
 .task-card {
   border: 1px solid rgb(229 231 235);
   border-radius: 1rem;
+  background-color: rgb(251, 252, 255);
   box-shadow: 0px 4px 4px 1px rgb(209 213 219);
-  margin: 1rem 0px;
-
+  margin: 1rem 2rem;
+  padding: 1rem 4rem;
   /* width: 100%; */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5% 5%;
 }
 .task-card h3 {
   text-transform: capitalize;
@@ -49,13 +54,85 @@ body,
   color: rgb(156 163 175);
 }
 
+.task-right {
+  display: flex;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  height: 3.5rem;
+  justify-content: space-between;
+}
+
+.buttons button {
+  margin-left: 1rem;
+  border: none;
+  border-radius: 1rem;
+  padding: 0.2rem 0.5rem;
+  box-shadow: 0px 2px 2px 1px rgb(209 213 219);
+  font-family: "Inter", sans-serif;
+  color: white;
+}
+
+.buttons button:first-child {
+  background-color: rgb(37, 112, 255);
+}
+
+.buttons button:last-child {
+  background-color: rgb(255, 61, 85);
+}
+
 .task-modal {
-  display: none;
+  border: 1px solid black;
   position: fixed;
   z-index: 10;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: auto;
   overflow: auto;
+  padding: 0px 0px 30px 0px;
+  background-color: rgb(251, 252, 255);
+}
+
+.task-modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.task-modal-content label {
+  display: flex;
+  align-items: center;
+}
+
+.task-modal-content input,
+.task-modal-content textarea {
+  margin: 0.5rem 2rem;
+  font-family: "Inter", sans-serif;
+}
+
+.button-container {
+  display: flex;
+  margin-top: 1rem;
+}
+
+.button-container button {
+  margin: 0px 2rem;
+  border: none;
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  box-shadow: 0px 4px 4px 1px rgb(209 213 219);
+  font-family: "Inter", sans-serif;
+}
+
+.save-btn {
+  background-color: rgb(37, 112, 255);
+}
+
+.cancel-btn {
+  background-color: rgb(255, 61, 85);
 }
