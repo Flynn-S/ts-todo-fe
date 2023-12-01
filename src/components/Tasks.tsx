@@ -20,7 +20,7 @@ const Tasks: React.FC = () => {
     data: tasks = [],
     refetch,
   } = useQuery<Task[]>("tasks", async () => {
-    const response = await fetch("http://localhost:8000/api/tasks"); // Replace with your actual API endpoint
+    const response = await fetch("http://localhost:8000/api/tasks");
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -44,15 +44,12 @@ const Tasks: React.FC = () => {
     if (!response.ok) {
       throw new Error("Failed to delete task");
     }
-
     refetch();
-
     return response.json();
   };
 
   const updateTaskStatus = useMutation(
     async (task: Task) => {
-      console.log(task);
       const response = await fetch(
         `http://localhost:8000/api/tasks/${task.id}`,
         {
@@ -102,16 +99,14 @@ const Tasks: React.FC = () => {
   }
 
   const sortedTasks = tasks.slice().sort((a, b) => {
-    // Handle cases where isCompleted is null
     if (a.isCompleted === null && b.isCompleted === null) {
       return 0;
     } else if (a.isCompleted === null) {
-      return 1; // Place null at the bottom
+      return 1;
     } else if (b.isCompleted === null) {
-      return -1; // Place null at the bottom
+      return -1;
     }
 
-    // Sort by isCompleted property
     return a.isCompleted ? -1 : 1;
   });
 

@@ -16,7 +16,6 @@ const TaskModal: React.FC<TaskModalProps> = ({
     isCompleted: false,
     completed_at: null,
   });
-  //   const [updatedTask, setUpdatedTask] = useState<Task | null>(null)
 
   useEffect(() => {
     if (task) {
