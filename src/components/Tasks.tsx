@@ -1,7 +1,14 @@
-import { useQuery } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import { Task } from "../interfaces/taskInterfaces";
 import TaskModal from "./TaskModal";
 import { useState } from "react";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPenToSquare,
+  faTrash,
+  faCirclePlus,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Tasks: React.FC = () => {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -43,6 +50,44 @@ const Tasks: React.FC = () => {
     return response.json();
   };
 
+  const updateTaskStatus = useMutation(
+    async (task: Task) => {
+      console.log(task);
+      const response = await fetch(
+        `http://localhost:8000/api/tasks/${task.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(task),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update task status");
+      }
+    },
+    {
+      onSuccess: () => {
+        console.log("Task status updated successfully!");
+        refetch();
+      },
+      onError: (error) => {
+        console.error("Error marking task as completed:", error);
+      },
+    }
+  );
+
+  const handleIsCompleted = (task: Task, isCompleted: boolean) => {
+    const updatedTask: Task = {
+      ...task,
+      isCompleted: isCompleted,
+    };
+    console.log(updatedTask);
+    updateTaskStatus.mutate(updatedTask);
+  };
+
   const handleModalClose = () => {
     setIsModalOpen(false);
     setSelectedTask(null);
@@ -56,12 +101,32 @@ const Tasks: React.FC = () => {
     return <div>Error: {error?.message ?? "An error occurred"}</div>;
   }
 
+  const sortedTasks = tasks.slice().sort((a, b) => {
+    // Handle cases where isCompleted is null
+    if (a.isCompleted === null && b.isCompleted === null) {
+      return 0;
+    } else if (a.isCompleted === null) {
+      return 1; // Place null at the bottom
+    } else if (b.isCompleted === null) {
+      return -1; // Place null at the bottom
+    }
+
+    // Sort by isCompleted property
+    return a.isCompleted ? -1 : 1;
+  });
+
   return (
     <div className="tasks-container">
       <h1>To Do List</h1>
       <ul className="task-list">
-        {tasks.map((task) => (
-          <div className="task-card">
+        {sortedTasks.map((task) => (
+          <div
+            className={
+              task.isCompleted
+                ? "bg-green task-card"
+                : "bg-green not-complete task-card"
+            }
+          >
             <div className="task-left">
               <li key={task.id}>
                 <h3>{task.task_name}</h3>
@@ -69,11 +134,23 @@ const Tasks: React.FC = () => {
               <p>{task.description}</p>
             </div>
             <div className="task-right">
-              <input type="checkbox"></input>
+              <label>
+                {task.isCompleted ? "Completed" : "In Progress"}
+                <input
+                  className={"isCompleted"}
+                  type="checkbox"
+                  checked={task.isCompleted}
+                  onChange={(e) => handleIsCompleted(task, e.target.checked)}
+                ></input>
+              </label>
               <div className="buttons">
-                <button onClick={() => handleEditTask(task)}>Edit</button>
+                <button onClick={() => handleEditTask(task)}>
+                  <FontAwesomeIcon className="editIcon" icon={faPenToSquare} />
+                  <p>Edit</p>
+                </button>
                 <button onClick={() => handleDeleteTask(task.id)}>
-                  Delete
+                  <FontAwesomeIcon className="deleteIcon" icon={faTrash} />
+                  <p>Delete</p>
                 </button>
               </div>
             </div>
@@ -81,7 +158,10 @@ const Tasks: React.FC = () => {
         ))}
       </ul>
       <div className="add-task-container">
-        <button onClick={() => handleAddTask()}>Add new task</button>
+        <button className="addTaskButton" onClick={() => handleAddTask()}>
+          <FontAwesomeIcon className="addIcon" icon={faCirclePlus} />
+          <p>Add new task</p>
+        </button>
       </div>
 
       {isModalOpen && (

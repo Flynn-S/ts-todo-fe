@@ -37,7 +37,6 @@ h1 {
 .task-card {
   border: 1px solid rgb(229 231 235);
   border-radius: 1rem;
-  background-color: rgb(251, 252, 255);
   box-shadow: 0px 4px 4px 1px rgba(209, 213, 219, 0.6);
   margin: 1rem 2rem;
   padding: 1rem 4rem;
@@ -45,6 +44,8 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-sizing: border-box;
+  min-height: 150px;
 }
 .task-card h3 {
   text-transform: capitalize;
@@ -56,22 +57,118 @@ h1 {
 
 .task-right {
   display: flex;
+  align-items: center;
+}
+
+.bg-green {
+  transition: all 0.3s ease-in-out;
+  background-color: rgb(94, 201, 86);
+}
+
+.not-complete {
+  transition: all 0.4s ease-in-out;
+  background-color: rgb(251, 252, 255);
 }
 
 .buttons {
   display: flex;
   flex-direction: column;
-  height: 3.5rem;
   justify-content: space-between;
+  height: 5rem;
+  margin-left: 1rem;
 }
 
 .buttons button {
   margin-left: 1rem;
+  margin: 2px 0px;
   border: none;
   border-radius: 1rem;
   padding: 0.2rem 0.5rem;
   box-shadow: 0px 2px 2px 1px rgb(209 213 219);
   font-family: "Inter", sans-serif;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.buttons .editIcon {
+  transition: transform 0.3s ease-in-out;
+  transform: scale(1.1);
+}
+
+.buttons .editIcon:hover {
+  animation: beat 1s ease-in-out infinite;
+}
+
+.addTaskButton {
+  display: flex;
+  align-items: center;
+}
+
+.addIcon {
+  transition: transform 0.3s cubic-bezier(0.28, 0.84, 0.42, 1);
+  transform: scale(1.1);
+  margin-right: 20px;
+}
+
+.addIcon:hover {
+  animation: beat 1s ease-in-out infinite;
+}
+
+@keyframes beat {
+  0%,
+  90% {
+    transform: scale(1.1);
+  }
+
+  45% {
+    transform: scale(1.4);
+  }
+}
+
+.buttons .deleteIcon {
+  transition: transform 0.3s cubic-bezier(0.28, 0.84, 0.42, 1);
+  transform: scale(1.05);
+}
+
+.buttons .deleteIcon:hover {
+  animation: bounce 1s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1, 1) translateY(0);
+  }
+
+  10% {
+    transform: scale(1.1, 0.9) translateY(0);
+  }
+
+  30% {
+    transform: scale(0.9, 1.1) translateY(-7px);
+  }
+
+  50% {
+    transform: scale(1.05, 0.95) translateY(0);
+  }
+
+  57% {
+    transform: scale(1, 1) translateY(-5px);
+  }
+
+  64% {
+    transform: scale(1, 1) translateY(0);
+  }
+
+  100% {
+    transform: scale(1, 1) translateY(0);
+  }
+}
+
+.buttons button p {
+  padding: 4px 5px;
+  margin: 0;
+  font-size: 1rem;
   color: white;
 }
 
