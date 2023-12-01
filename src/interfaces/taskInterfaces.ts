@@ -3,5 +3,5 @@ export interface Task {
   task_name: string;
   description: string;
   isCompleted: boolean;
-  completed_at: Date;
+  completed_at: Date | null;
 }
