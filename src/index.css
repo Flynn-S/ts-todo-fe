@@ -5,7 +5,14 @@ body,
 #root,
 .app {
   font-family: "Inter", sans-serif;
-  background-color: rgb(245, 235, 212);
+  /* colors */
+  --kelly-green: rgb(167, 233, 143);
+  --mantis: #83bd4cff;
+  --isabelline: #8b8b8b;
+  --red-cmyk: #e92020ff;
+  --brandeis-blue: rgb(21, 108, 247);
+  --night: #f4f5f5;
+  background-color: rgb(243, 243, 243);
 }
 
 .app {
@@ -34,9 +41,9 @@ h1 {
 }
 
 .task-card {
-  border: 1px solid rgb(229 231 235);
+  border: 1px solid rgb(168, 168, 168);
   border-radius: 1rem;
-  box-shadow: 0px 4px 4px 1px rgba(209, 213, 219, 0.6);
+  box-shadow: 0px 2px 4px 1px rgba(169, 169, 169, 0.5);
   margin: 1rem 2rem;
   padding: 1rem 4rem;
   display: flex;
@@ -50,7 +57,11 @@ h1 {
 }
 
 .task-card p {
-  color: rgb(156 163 175);
+  color: rgb(137, 142, 152);
+}
+
+#text-white {
+  color: black;
 }
 
 .task-right {
@@ -59,15 +70,18 @@ h1 {
 }
 
 .bg-green {
-  transition: all 0.3s ease-in-out;
-  background-color: rgb(94, 201, 86);
+  transition: all 0.4s ease-in-out;
+  background-color: var(--kelly-green);
 }
 
 .not-complete {
   transition: all 0.4s ease-in-out;
-  background-color: rgb(251, 252, 255);
+  background-color: rgb(244, 203, 143);
 }
 
+.blue {
+  color: var(--brandeis-blue);
+}
 .buttons {
   display: flex;
   flex-direction: column;
@@ -82,7 +96,6 @@ h1 {
   border: none;
   border-radius: 1rem;
   padding: 0.2rem 0.5rem;
-  box-shadow: 0px 2px 2px 1px rgb(209 213 219);
   font-family: "Inter", sans-serif;
   color: white;
   display: flex;
@@ -96,6 +109,14 @@ h1 {
 
 .editButton:hover .editIcon {
   animation: beat 1s ease-in-out infinite;
+}
+
+.editButton {
+  box-shadow: 0px 2px 2px 1px var(--brandeis-blue);
+}
+
+.deleteButton {
+  box-shadow: 0px 2px 2px 1px var(--red-cmyk);
 }
 
 .addTaskButton {
@@ -171,11 +192,11 @@ h1 {
 }
 
 .buttons button:first-child {
-  background-color: rgb(37, 112, 255);
+  background-color: var(--brandeis-blue);
 }
 
 .buttons button:last-child {
-  background-color: rgb(255, 61, 85);
+  background-color: var(--red-cmyk);
 }
 
 .task-modal {
@@ -189,7 +210,7 @@ h1 {
   height: auto;
   overflow: auto;
   padding: 0px 0px 30px 0px;
-  background-color: rgb(251, 252, 255);
+  background-color: var(--night);
 }
 
 .task-modal-content {
@@ -220,16 +241,17 @@ h1 {
   border: none;
   border-radius: 1rem;
   padding: 0.5rem 1rem;
-  box-shadow: 0px 4px 4px 1px rgb(209 213 219);
   font-family: "Inter", sans-serif;
+  color: white;
+  font-weight: bold;
 }
 
 .save-btn {
-  background-color: rgb(37, 112, 255);
+  background-color: var(--brandeis-blue);
 }
 
 .cancel-btn {
-  background-color: rgb(255, 61, 85);
+  background-color: var(--red-cmyk);
 }
 
 .add-task-container {
@@ -240,8 +262,8 @@ h1 {
   border: none;
   border-radius: 3rem;
   padding: 1rem 10rem;
-  box-shadow: 0px 2px 2px 1px rgb(209 213 219);
-  background-color: rgb(37, 112, 255);
+  box-shadow: 0px 2px 2px 1px var(--isabelline);
+  background-color: var(--brandeis-blue);
   font-family: "Inter", sans-serif;
   color: white;
   font-size: 1.4rem;

@@ -126,7 +126,9 @@ const Tasks: React.FC = () => {
               <li key={task.id}>
                 <h3>{task.task_name}</h3>
               </li>
-              <p>{task.description}</p>
+              <p id={task.isCompleted ? "text-white" : ""}>
+                {task.description}
+              </p>
             </div>
             <div className="task-right">
               <label>
