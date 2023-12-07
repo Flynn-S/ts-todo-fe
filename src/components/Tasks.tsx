@@ -130,6 +130,14 @@ const Tasks: React.FC = () => {
                 {task.description}
               </p>
             </div>
+            <div className="task-center">
+              <h3>Dependancies</h3>
+              <ul>
+                {task.dependencies.map((task) => (
+                  <li key={task.id}>{task.task_name}</li>
+                ))}
+              </ul>
+            </div>
             <div className="task-right">
               <label>
                 {task.isCompleted ? "Completed" : "In Progress"}
@@ -169,6 +177,7 @@ const Tasks: React.FC = () => {
 
       {isModalOpen && (
         <TaskModal
+          tasks={tasks}
           task={selectedTask}
           onClose={handleModalClose}
           refetch={refetch}

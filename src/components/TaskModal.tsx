@@ -5,17 +5,20 @@ import { v4 as uuidv4 } from "uuid";
 
 const TaskModal: React.FC<TaskModalProps> = ({
   task,
+  tasks,
   onClose,
   refetch,
   isModalOpen,
 }) => {
   const [editedTask, setEditedTask] = useState<Task>({
-    id: uuidv4(),
+    id: "",
     task_name: "",
     description: "",
+    dependencies: [],
     isCompleted: false,
     completed_at: null,
   });
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   useEffect(() => {
     if (task) {
@@ -58,6 +61,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
         console.log("Task created successfully!");
         refetch();
         onClose();
+        console.log(tasks);
       },
       onError: (error) => {
         console.error("Error creating task:", error);
@@ -69,16 +73,24 @@ const TaskModal: React.FC<TaskModalProps> = ({
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    console.log(name, value);
     setEditedTask((prevTask) => ({ ...prevTask, [name]: value }));
   };
 
   const handleSave: React.MouseEventHandler<HTMLButtonElement> = () => {
-    console.log(editedTask);
+    let updatedTask = { ...editedTask };
+    if (selectedTask) {
+      updatedTask = {
+        ...editedTask,
+        dependencies: [selectedTask.id],
+      };
+      console.log(updatedTask);
+    }
     if (task) {
-      updateTask.mutate(editedTask);
+      console.log("updating...");
+      updateTask.mutate(updatedTask);
     } else {
-      createNewTask.mutate(editedTask);
+      console.log("creating...");
+      createNewTask.mutate(updatedTask);
     }
   };
 
@@ -107,6 +119,28 @@ const TaskModal: React.FC<TaskModalProps> = ({
             value={editedTask.description}
             onChange={handleInputChange}
           />
+        </label>
+        <label>
+          Dependencies:
+          <select
+            name="dependencies"
+            value={selectedTask ? selectedTask.id : ""}
+            onChange={(e) => {
+              const selectedTaskID = e.target.value;
+
+              const foundTask = tasks.find(
+                (task) => task.id === selectedTaskID
+              );
+              setSelectedTask(foundTask || null);
+            }}
+          >
+            <option value="">Select a Task</option>
+            {tasks.map((task: Task) => (
+              <option key={task.id} value={task.id}>
+                {task.task_name}
+              </option>
+            ))}
+          </select>
         </label>
         <div className="button-container">
           <button onClick={handleSave} className="save-btn">
