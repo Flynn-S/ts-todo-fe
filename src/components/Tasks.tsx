@@ -50,6 +50,7 @@ const Tasks: React.FC = () => {
 
   const updateTaskStatus = useMutation(
     async (task: Task) => {
+      const { dependencies, ...taskData } = task;
       const response = await fetch(
         `http://localhost:8000/api/tasks/${task.id}`,
         {
@@ -57,7 +58,7 @@ const Tasks: React.FC = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(task),
+          body: JSON.stringify(taskData),
         }
       );
 
@@ -77,6 +78,7 @@ const Tasks: React.FC = () => {
   );
 
   const handleIsCompleted = (task: Task, isCompleted: boolean) => {
+    console.log(task.task_name);
     const updatedTask: Task = {
       ...task,
       isCompleted: isCompleted,
